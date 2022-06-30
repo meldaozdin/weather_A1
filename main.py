@@ -24,11 +24,11 @@ for i in range(len(df.days)):
     data.drop(['hours'], axis=1, inplace=True)
     data.drop_duplicates(keep='first', inplace=True)
     result = result.append(data, ignore_index=True)
-result.to_csv('./result/result.csv', index=False)
+result.to_csv('/tmp/result.csv', index=False)
 
 
 # Today
-result = pd.read_csv('./result/result.csv')
+result = pd.read_csv('/tmp/result.csv')
 
 URL_2 = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/istanbul/today?unitGroup=metric&elements=datetime%2Ctempmax%2Ctempmin%2Ctemp&key=Q4XWJL3XM9K5ANQVCASFC9RC9&contentType=json"
 json = requests.get(URL_2).json()
@@ -41,6 +41,6 @@ for i in range(len(df_2.days)):
     data_2.drop_duplicates(keep='first', inplace=True)
     result = result.append(data_2, ignore_index=True)
 result['datetime'] = pd.to_datetime(result['datetime'])
-result.to_csv('./result/result.csv', index=False)
+result.to_csv('/tmp/result.csv', index=False)
 
 
