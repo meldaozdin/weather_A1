@@ -4,13 +4,13 @@ import warnings
 import requests
 
 
-warnings.filterwarnings("ignore")
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', None)
-pd.set_option('expand_frame_repr', False)
-
-today = date.today()
-yesterday = today - timedelta(days=1)
+# warnings.filterwarnings("ignore")
+# pd.set_option('display.max_rows', None)
+# pd.set_option('display.max_columns', None)
+# pd.set_option('expand_frame_repr', False)
+#
+# today = date.today()
+# yesterday = today - timedelta(days=1)
 
 # Last 7 day (not include today)
 #
@@ -28,19 +28,24 @@ yesterday = today - timedelta(days=1)
 
 
 # Today
-result = pd.read_csv('temp/result.csv')
+# result = pd.read_csv('temp/result.csv')
 
 URL_2 = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/istanbul/today?unitGroup=metric&elements=datetime%2Ctempmax%2Ctempmin%2Ctemp&key=Q4XWJL3XM9K5ANQVCASFC9RC9&contentType=json"
 json = requests.get(URL_2).json()
-df_2 = pd.json_normalize(json)
-
-
-for i in range(len(df_2.days)):
-    data_2 = pd.DataFrame.from_dict(df_2.days[i])
-    data_2.drop(['hours'], axis=1, inplace=True)
-    data_2.drop_duplicates(keep='first', inplace=True)
-    result = result.append(data_2, ignore_index=True)
-result['datetime'] = pd.to_datetime(result['datetime'])
-result.to_csv('temp/result.csv', index=False)
-
+datetime = json['days'][0]['datetime']
+tempmax = json['days'][0]['tempmax']
+tempmin = json['days'][0]['tempmin']
+temp = json['days'][0]['temp']
+print(json['days'][0]['datetime'])
+# df_2 = pd.json_normalize(json)
+#
+#
+# for i in range(len(df_2.days)):
+#     data_2 = pd.DataFrame.from_dict(df_2.days[i])
+#     data_2.drop(['hours'], axis=1, inplace=True)
+#     data_2.drop_duplicates(keep='first', inplace=True)
+#     result = result.append(data_2, ignore_index=True)
+# result['datetime'] = pd.to_datetime(result['datetime'])
+# result.to_csv('temp/result.csv', index=False)
+#
 
